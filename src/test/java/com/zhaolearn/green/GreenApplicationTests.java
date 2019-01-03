@@ -13,6 +13,7 @@ import java.io.IOException;
 @SpringBootTest
 public class GreenApplicationTests {
     private static GreenTools greenTools=new GreenTools();
+    private static String fileName="myfile.txt";
     @Test
     public void testClone() throws IOException, GitAPIException {
         greenTools.testClone();
@@ -20,5 +21,9 @@ public class GreenApplicationTests {
     @Test
     public void testAdd() throws IOException, GitAPIException {
         greenTools.testAdd("myfile.txt");
+    }
+    @Test
+    public void writeFile() {
+        greenTools.writeFile(fileName,"。");
     }
 }
