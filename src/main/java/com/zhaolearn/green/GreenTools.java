@@ -27,7 +27,7 @@ public class GreenTools {
 
     //设置远程服务器上的用户名和密码
     private static UsernamePasswordCredentialsProvider usernamePasswordCredentialsProvider = new
-            UsernamePasswordCredentialsProvider("username", "password");
+            UsernamePasswordCredentialsProvider(User.userName, User.pw);
 
     /**
      * 克隆远程库
