@@ -25,7 +25,7 @@ public class GreenTools {
     //追加文件的文件名
 
 
-    //设置远程服务器上的用户名和密码，这个是假如你电脑凭据管理中没登录过Git才使用的
+    //1设置远程服务器上的用户名和密码，这个是假如你电脑凭据管理中没登录过Git才使用的
     private static UsernamePasswordCredentialsProvider usernamePasswordCredentialsProvider = new
             UsernamePasswordCredentialsProvider("Username","pw");
 
