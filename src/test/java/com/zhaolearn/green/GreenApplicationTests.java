@@ -26,4 +26,23 @@ public class GreenApplicationTests {
     public void writeFile() {
         greenTools.writeFile(fileName,"。");
     }
+
+    @Test
+    public void testCommit() throws IOException, GitAPIException {
+        greenTools.testCommit();
+    }
+
+    @Test
+    public void testPush() throws IOException, GitAPIException {
+        greenTools.testPush();
+    }
+
+    @Test
+    public void testAll() throws IOException, GitAPIException {
+        greenTools.writeFile(fileName,"。");
+        greenTools.testCommit();
+        greenTools.testPush();
+
+    }
+
 }
