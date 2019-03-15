@@ -14,6 +14,8 @@ import java.io.IOException;
 public class GreenApplicationTests {
     private static GreenTools greenTools=new GreenTools();
     private static String fileName="myfile.txt";
+    //下载已有仓库到本地路径
+    private static String localPath = "D:\\Test\\Test\\";
     @Test
     public void testClone() throws IOException, GitAPIException {
         greenTools.testClone();
@@ -39,14 +41,7 @@ public class GreenApplicationTests {
 
     @Test
     public void testAll() throws IOException, GitAPIException {
-        for (int i = 0; i < 15; i++) {
-            for (int j = 0; j < 50; j++) {
-                greenTools.writeFile(fileName, "。");
-                greenTools.testCommit();
-            }
-            UpdateSystemTime.updateSysDateTime();
-        }
-        greenTools.testPush();
+        greenTools.flushAllGreen(10,10,localPath);
     }
 
 }

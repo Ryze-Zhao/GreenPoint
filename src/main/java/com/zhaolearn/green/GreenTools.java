@@ -23,11 +23,11 @@ public class GreenTools {
     //本地路径新建
     private static String initPath = "D:\\Test\\Test\\";
     //追加文件的文件名
-
+    private static String fileName="myfile.txt";
 
     //1设置远程服务器上的用户名和密码，这个是假如你电脑凭据管理中没登录过Git才使用的
     private static UsernamePasswordCredentialsProvider usernamePasswordCredentialsProvider = new
-            UsernamePasswordCredentialsProvider("Username","pw");
+            UsernamePasswordCredentialsProvider("user","pw");
 
     /**
      * 克隆远程库
@@ -132,5 +132,26 @@ public class GreenTools {
                 }
             }
         }
+    }
+
+
+    /**
+     * 给入总天数，每天提交次数，项目路径
+     * @param days
+     * @param commitNum
+     * @param projectPath
+     * @throws IOException
+     * @throws GitAPIException
+     */
+    public void flushAllGreen(int days,int commitNum,String projectPath) throws IOException, GitAPIException {
+        localPath=projectPath;
+        for (int i = 0; i < days; i++) {
+            for (int j = 0; j < commitNum; j++) {
+                writeFile(fileName, "。");
+                testCommit();
+            }
+            UpdateSystemTime.updateSysDateTime();
+        }
+        testPush();
     }
 }
