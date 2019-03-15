@@ -39,10 +39,14 @@ public class GreenApplicationTests {
 
     @Test
     public void testAll() throws IOException, GitAPIException {
-        greenTools.writeFile(fileName,"。");
-        greenTools.testCommit();
+        for (int i = 0; i < 15; i++) {
+            for (int j = 0; j < 50; j++) {
+                greenTools.writeFile(fileName, "。");
+                greenTools.testCommit();
+            }
+            UpdateSystemTime.updateSysDateTime();
+        }
         greenTools.testPush();
-
     }
 
 }

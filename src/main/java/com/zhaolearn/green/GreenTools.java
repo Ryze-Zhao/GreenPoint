@@ -19,9 +19,9 @@ public class GreenTools {
     //远程库路径
     private static String remotePath = "https://github.com/Giggs-Zhao/TestGreen.git";
     //下载已有仓库到本地路径
-    private static String localPath = "D:\\Test\\";
+    private static String localPath = "D:\\Test\\Test\\";
     //本地路径新建
-    private static String initPath = "D:\\Test\\Hehe";
+    private static String initPath = "D:\\Test\\Test\\";
     //追加文件的文件名
 
 
