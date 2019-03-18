@@ -7,27 +7,66 @@ import org.eclipse.jgit.internal.storage.file.FileRepository;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 
-
-
-
+@Component
+//@ConfigurationProperties(prefix = "application.yaml")
 public class GreenTools {
-    //远程库路径
-    private static String remotePath = "https://github.com/Giggs-Zhao/TestGreen.git";
-    //下载已有仓库到本地路径
-    private static String localPath = "D:\\Test\\Test\\";
-    //本地路径新建
-    private static String initPath = "D:\\Test\\Test\\";
-    //追加文件的文件名
-    private static String fileName="myfile.txt";
+    //Git账号
+    @Value("${GitUser.UserName}")
+    private String userName;
 
-    //1设置远程服务器上的用户名和密码，这个是假如你电脑凭据管理中没登录过Git才使用的
-    private static UsernamePasswordCredentialsProvider usernamePasswordCredentialsProvider = new
-            UsernamePasswordCredentialsProvider("user","pw");
+    //Git账号的密码
+    @Value("${GitUser.PassWord}")
+    private String passWord;
+
+    //远程库路径
+    @Value("${GitUser.ProjectGitUrl}")
+    private String projectGitUrl;
+
+    //项目名称
+    @Value("${GitUser.ProjectName}")
+    private String projectName;
+
+    //下载已有仓库到本地路径
+    @Value("${GitUser.Path}")
+    private String path;
+
+    //追加文件的文件名
+    @Value("${GitUser.CommitFileName}")
+    private String commitFileName;
+
+    //本地路径新建项目
+    @Value("${GitUser.NewPath}")
+    private String initPath;
+
+    /**
+     * 输出一下参数
+     *
+     * @param
+     * @return: void
+     * @author: HeHaoZhao
+     * @date: 2019/3/18 14:06
+     */
+    public void printParams() {
+        System.out.println(userName + "-----" + passWord + "-----" + projectGitUrl + "-----" + path + "-----" + commitFileName);
+    }
+
+    /**
+     * 本地新建仓库
+     */
+    public void projectCreate() throws IOException {
+        //本地新建仓库地址
+        Repository newRepo = FileRepositoryBuilder.create(new File(path + "/.git"));
+        newRepo.create();
+    }
 
     /**
      * 克隆远程库
@@ -35,86 +74,79 @@ public class GreenTools {
      * @throws IOException
      * @throws GitAPIException
      */
-    public void testClone() throws GitAPIException {
+    public void projectClone() throws GitAPIException {
         //克隆代码库命令
         CloneCommand cloneCommand = Git.cloneRepository();
-        Git git = cloneCommand.setURI(remotePath) //设置远程URI
+        Git git = cloneCommand.setURI(projectGitUrl) //设置远程URI
                 .setBranch("master") //设置clone下来的分支
-                .setDirectory(new File(localPath)) //设置下载存放路径
-                .setCredentialsProvider(usernamePasswordCredentialsProvider) //设置权限验证
+                .setDirectory(new File(path)) //设置下载存放路径
+                .setCredentialsProvider(new UsernamePasswordCredentialsProvider(userName, passWord)) //设置权限验证
                 .call();
         System.out.print(git.tag());
     }
 
     /**
-     * 本地新建仓库
-     */
-    public void testCreate() throws IOException {
-        //本地新建仓库地址
-        Repository newRepo = FileRepositoryBuilder.create(new File(initPath + "/.git"));
-        newRepo.create();
-    }
-
-    /**
-     * 增加文件
-     *
-     * @param fileName 文件名字：test.txt
+     * 增加文件,文件名字为yaml中的GitUser.CommitFileName
      * @date: 2019/3/6 10:23
      */
-    public void testAdd(String fileName) throws IOException, GitAPIException {
-        File myfile = new File(localPath + "/myfile.txt");
+    public void addFile() throws IOException, GitAPIException {
+        File myfile = new File(path + projectName + "////" + commitFileName);
         myfile.createNewFile();
         //git仓库地址
-        Git git = new Git(new FileRepository(localPath + "/.git"));
+        Git git = new Git(new FileRepository(path + projectName + "/.git"));
         //添加文件
-        git.add().addFilepattern("myfile").call();
+        git.add().addFilepattern(commitFileName).call();
     }
+
 
     /**
      * 本地提交代码
      */
-    public void testCommit() throws IOException, GitAPIException,
+    public void commit(String commitMessage) throws IOException, GitAPIException,
             JGitInternalException {
         //git仓库地址
-        Git git = new Git(new FileRepository(localPath + "/.git"));
+        Git git = new Git(new FileRepository(path + projectName + "/.git"));
         //提交代码
-        git.commit().setMessage("test jGit").call();
+        git.commit().setMessage(commitMessage).call();
     }
 
 
     /**
      * 拉取远程仓库内容到本地
      */
-    public void testPull() throws IOException, GitAPIException {
-
+    public void pull() throws IOException, GitAPIException {
         //git仓库地址
-        Git git = new Git(new FileRepository(localPath + "/.git"));
+        Git git = new Git(new FileRepository(path + projectName  + "/.git"));
         git.pull().setRemoteBranchName("master").
-                setCredentialsProvider(usernamePasswordCredentialsProvider).call();
+                setCredentialsProvider(new UsernamePasswordCredentialsProvider(userName, passWord)).call();
     }
 
-    /**
-     * push本地代码到远程仓库地址
-     */
-    public void testPush() throws IOException, JGitInternalException,
+  /**
+   *
+   * push本地代码到远程仓库地址
+   * @param remoteName	 git中remoteName，通常为origin
+   * @return: void
+   * @author: HeHaoZhao
+   * @date: 2019/3/18 14:37
+   */
+    public void push(String remoteName) throws IOException, JGitInternalException,
             GitAPIException {
         //git仓库地址
-        Git git = new Git(new FileRepository(localPath + "/.git"));
-        git.push().setRemote("origin").setCredentialsProvider(usernamePasswordCredentialsProvider).call();
+        Git git = new Git(new FileRepository(path + projectName  +"/.git"));
+        git.push().setRemote(remoteName).setCredentialsProvider(new UsernamePasswordCredentialsProvider(userName, passWord)).call();
     }
 
 
     /**
      * 将字符串追加到文件已有内容后面
      *
-     * @param fileName 文件名字：test.txt
      * @param content  需要写入的内容
      */
-    public static void writeFile(String fileName, String content) {
+    public void writeFile( String content) {
         FileOutputStream fos = null;
         try {
             //true不覆盖已有内容
-            fos = new FileOutputStream(localPath + "/" + fileName, true);
+            fos = new FileOutputStream(path + projectName  + "////" + commitFileName, true);
             //写入
             fos.write(content.getBytes());
             // 写入一个换行
@@ -139,19 +171,18 @@ public class GreenTools {
      * 给入总天数，每天提交次数，项目路径
      * @param days
      * @param commitNum
-     * @param projectPath
      * @throws IOException
      * @throws GitAPIException
      */
-    public void flushAllGreen(int days,int commitNum,String projectPath) throws IOException, GitAPIException {
-        localPath=projectPath;
+    public void flushAllGreen(int days,int commitNum) throws IOException, GitAPIException {
         for (int i = 0; i < days; i++) {
             for (int j = 0; j < commitNum; j++) {
-                writeFile(fileName, "。");
-                testCommit();
+                writeFile("。");
+                commit("test"+j);
             }
             UpdateSystemTime.updateSysDateTime();
         }
-        testPush();
+        push("origin");
     }
+
 }

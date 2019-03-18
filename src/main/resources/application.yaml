@@ -1,1 +1,17 @@
+#配置信息
+GitUser:
 
+#Git账号
+  UserName: *
+#Git账号的密码
+  PassWord: *
+#看url的.git前，/后的那段就ok了：https://gitee.com/MyTestLie/Test.git
+  ProjectName: Test
+#操作项目的本地路径（如下载和修改）,eg:D:\\Test\\Test\\
+  Path: D:\\Test\\
+#每次Commit被追加内容的txt名字
+  CommitFileName: myfile.txt
+#项目的Git地址
+  ProjectGitUrl: https://gitee.com/MyTestLie/Test.git
+#自动新建Git项目路径
+  NewPath: D:\\Test\\Test\\
