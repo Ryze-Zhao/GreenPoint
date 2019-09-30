@@ -87,6 +87,7 @@ public class GreenTools {
 
     /**
      * 增加文件,文件名字为yaml中的GitUser.CommitFileName
+     *
      * @date: 2019/3/6 10:23
      */
     public void addFile() throws IOException, GitAPIException {
@@ -116,23 +117,23 @@ public class GreenTools {
      */
     public void pull() throws IOException, GitAPIException {
         //git仓库地址
-        Git git = new Git(new FileRepository(path + projectName  + "/.git"));
+        Git git = new Git(new FileRepository(path + projectName + "/.git"));
         git.pull().setRemoteBranchName("master").
                 setCredentialsProvider(new UsernamePasswordCredentialsProvider(userName, passWord)).call();
     }
 
-  /**
-   *
-   * push本地代码到远程仓库地址
-   * @param remoteName	 git中remoteName，通常为origin
-   * @return: void
-   * @author: HeHaoZhao
-   * @date: 2019/3/18 14:37
-   */
+    /**
+     * push本地代码到远程仓库地址
+     *
+     * @param remoteName git中remoteName，通常为origin
+     * @return: void
+     * @author: HeHaoZhao
+     * @date: 2019/3/18 14:37
+     */
     public void push(String remoteName) throws IOException, JGitInternalException,
             GitAPIException {
         //git仓库地址
-        Git git = new Git(new FileRepository(path + projectName  +"/.git"));
+        Git git = new Git(new FileRepository(path + projectName + "/.git"));
         git.push().setRemote(remoteName).setCredentialsProvider(new UsernamePasswordCredentialsProvider(userName, passWord)).call();
     }
 
@@ -140,13 +141,13 @@ public class GreenTools {
     /**
      * 将字符串追加到文件已有内容后面
      *
-     * @param content  需要写入的内容
+     * @param content 需要写入的内容
      */
-    public void writeFile( String content) {
+    public void writeFile(String content) {
         FileOutputStream fos = null;
         try {
             //true不覆盖已有内容
-            fos = new FileOutputStream(path + projectName  + "////" + commitFileName, true);
+            fos = new FileOutputStream(path + projectName + "////" + commitFileName, true);
             //写入
             fos.write(content.getBytes());
             // 写入一个换行
@@ -169,16 +170,17 @@ public class GreenTools {
 
     /**
      * 给入总天数，每天提交次数，项目路径
+     *
      * @param days
      * @param commitNum
      * @throws IOException
      * @throws GitAPIException
      */
-    public void flushAllGreen(int days,int commitNum) throws IOException, GitAPIException {
+    public void flushAllGreen(int days, int commitNum) throws IOException, GitAPIException {
         for (int i = 0; i < days; i++) {
             for (int j = 0; j < commitNum; j++) {
                 writeFile("。");
-                commit("test"+j);
+                commit("test" + j);
             }
             UpdateSystemTime.updateSysDateTime();
         }

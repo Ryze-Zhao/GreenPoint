@@ -20,18 +20,14 @@ public class GreenApplicationTests {
     private String commitFileName;
 
     @Test
-    public void printParams()  {
+    public void printParams() {
         greenTools.printParams();
     }
 
     @Test
     public void prin() throws IOException, GitAPIException {
-        greenTools.flushAllGreen(3,50);
+        greenTools.flushAllGreen(3, 50);
     }
-
-
-
-
 
 
 //

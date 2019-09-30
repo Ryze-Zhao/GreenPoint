@@ -23,7 +23,7 @@ public class UpdateSystemTime {
     /**
      * 自动将系统时间往前设置一天
      */
-    public static void updateSysDateTime(){
+    public static void updateSysDateTime() {
         try {
             SimpleDateFormat dft = new SimpleDateFormat("yyyy-MM-dd");
             Date beginDate = new Date();
@@ -46,11 +46,11 @@ public class UpdateSystemTime {
             } else if (osName.matches("^(?i)Linux.*$")) {
                 // Linux 系统 格式：yyyy-MM-dd HH:mm:ss   date -s "2017-11-11 11:11:11"
                 FileWriter excutefw = new FileWriter("/usr/updateSysTime.sh");
-                BufferedWriter excutebw=new BufferedWriter(excutefw);
+                BufferedWriter excutebw = new BufferedWriter(excutefw);
 //                excutebw.write("date -s \"" + dataStr_ +" "+ timeStr_ +"\"\r\n");
                 excutebw.close();
                 excutefw.close();
-                String cmd_date ="sh /usr/updateSysTime.sh";
+                String cmd_date = "sh /usr/updateSysTime.sh";
                 Runtime.getRuntime().exec(cmd_date);
 //                System.out.println("cmd :" + cmd_date + " date :" + dataStr_ +" time :" + timeStr_);
                 System.out.println("linux 时间修改");
